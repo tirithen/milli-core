@@ -1,0 +1,1 @@
+../../flatten-serde-json/src/lib.rs

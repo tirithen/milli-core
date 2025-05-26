@@ -5,8 +5,8 @@ use nom::combinator::cut;
 use nom::sequence::{delimited, terminated};
 use nom::{InputIter, InputLength, InputTake, Slice};
 
-use crate::error::{ExpectedValueKind, NomErrorExt};
-use crate::{
+use super::error::{ExpectedValueKind, NomErrorExt};
+use super::{
     parse_geo, parse_geo_bounding_box, parse_geo_distance, parse_geo_point, parse_geo_radius,
     Error, ErrorKind, IResult, Span, Token,
 };
@@ -223,8 +223,8 @@ fn is_keyword(s: &str) -> bool {
 pub mod test {
     use nom::Finish;
 
+    use super::super::tests::rtok;
     use super::*;
-    use crate::tests::rtok;
 
     #[test]
     fn test_span() {

@@ -3,7 +3,7 @@ use std::fmt::Display;
 use nom::error::{self, ParseError};
 use nom::Parser;
 
-use crate::{IResult, Span};
+use super::{IResult, Span};
 
 pub trait NomErrorExt<E> {
     fn is_failure(&self) -> bool;

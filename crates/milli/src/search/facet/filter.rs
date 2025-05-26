@@ -2,8 +2,8 @@ use std::collections::BTreeSet;
 use std::fmt::{Debug, Display};
 use std::ops::Bound::{self, Excluded, Included, Unbounded};
 
+pub use crate::filter_parser::{Condition, Error as FPError, FilterCondition, Token};
 use either::Either;
-pub use filter_parser::{Condition, Error as FPError, FilterCondition, Token};
 use heed::types::LazyDecode;
 use heed::BytesEncode;
 use memchr::memmem::Finder;

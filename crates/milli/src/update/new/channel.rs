@@ -9,8 +9,8 @@ use std::sync::atomic::{self, AtomicUsize};
 use std::sync::Arc;
 use std::time::Duration;
 
-use bbqueue::framed::{FrameGrantR, FrameProducer};
-use bbqueue::BBBuffer;
+use bbqueue_heap::framed::{FrameGrantR, FrameProducer};
+use bbqueue_heap::BBBuffer;
 use bytemuck::{checked, CheckedBitPattern, NoUninit};
 use flume::{RecvTimeoutError, SendError};
 use heed::types::Bytes;
@@ -122,7 +122,7 @@ pub struct WriterBbqueueReceiver<'a> {
     /// ensures fair distribution of work among consumers.
     look_at_consumer: Cycle<Range<usize>>,
     /// The BBQueue frames to read when waking-up.
-    consumers: Vec<bbqueue::framed::FrameConsumer<'a>>,
+    consumers: Vec<bbqueue_heap::framed::FrameConsumer<'a>>,
     /// The total number of attempts to send messages
     /// over the bbqueue channel.
     sent_messages_attempts: Arc<AtomicUsize>,
@@ -728,7 +728,7 @@ where
 
                     return Ok(());
                 }
-                Err(bbqueue::Error::InsufficientSize) => continue,
+                Err(bbqueue_heap::Error::InsufficientSize) => continue,
                 Err(e) => unreachable!("{e:?}"),
             }
         }

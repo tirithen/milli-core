@@ -24,7 +24,6 @@ convert_case = "0.6.0"
 crossbeam-channel = "0.5.15"
 deserr = "0.6.3"
 either = { version = "1.13.0", features = ["serde"] }
-flatten-serde-json = { path = "../flatten-serde-json" }
 fst = "0.4.7"
 fxhash = "0.2.1"
 geoutils = "0.5.1"
@@ -37,7 +36,6 @@ heed = { version = "0.22.0", default-features = false, features = [
     "serde-bincode",
 ] }
 indexmap = { version = "2.7.0", features = ["serde"] }
-json-depth-checker = { path = "../json-depth-checker" }
 levenshtein_automata = { version = "0.2.1", features = ["fst_automaton"] }
 memchr = "2.7.4"
 memmap2 = "0.9.5"
@@ -63,8 +61,6 @@ time = { version = "0.3.37", features = [
 ] }
 uuid = { version = "1.11.0", features = ["v4"] }
 
-filter-parser = { path = "../filter-parser" }
-
 # documents words self-join
 itertools = "0.14.0"
 
@@ -72,15 +68,11 @@ csv = "1.3.1"
 candle-core = { version = "0.8.2" }
 candle-transformers = { version = "0.8.2" }
 candle-nn = { version = "0.8.2" }
-tokenizers = { git = "https://github.com/huggingface/tokenizers.git", tag = "v0.15.2", version = "0.15.2", default-features = false, features = [
-    "onig",
-] }
-hf-hub = { git = "https://github.com/dureuill/hf-hub.git", branch = "rust_tls", default-features = false, features = [
-    "online",
-] }
+tokenizers = "0.15.2"
+hf-hub = "0.4.2"
 tiktoken-rs = "0.6.0"
 liquid = "0.26.9"
-rhai = { git = "https://github.com/rhaiscript/rhai", rev = "ef3df63121d27aacd838f366f2b83fd65f20a1e4", features = [
+rhai = { "version" = "1.21.0", features = [
     "serde",
     "no_module",
     "no_custom_syntax",
@@ -101,7 +93,7 @@ allocator-api2 = "0.2.21"
 rustc-hash = "2.1.0"
 uell = "0.1.0"
 enum-iterator = "2.1.0"
-bbqueue = { git = "https://github.com/meilisearch/bbqueue" }
+bbqueue-heap = { version = "0.5.1" }
 flume = { version = "0.11.1", default-features = false }
 utoipa = { version = "5.3.1", features = [
     "non_strict_integers",
@@ -111,6 +103,9 @@ utoipa = { version = "5.3.1", features = [
     "openapi_extensions",
 ] }
 lru = "0.13.0"
+nom = "7.1.3"
+nom_locate = "4.2.0"
+unescaper = "0.1.5"
 
 [dev-dependencies]
 mimalloc = { version = "0.1.43", default-features = false }

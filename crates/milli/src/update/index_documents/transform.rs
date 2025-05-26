@@ -22,7 +22,9 @@ use crate::attribute_patterns::PatternMatch;
 use crate::documents::{DocumentsBatchIndex, EnrichedDocument, EnrichedDocumentsBatchReader};
 use crate::error::{Error, InternalError, UserError};
 use crate::fields_ids_map::metadata::{FieldIdMapWithMetadata, MetadataBuilder};
+use crate::flatten_serde_json;
 use crate::index::{db_name, main_key};
+use crate::json_depth_checker;
 use crate::update::del_add::{
     into_del_add_obkv, into_del_add_obkv_conditional_operation, DelAdd, DelAddOperation,
     KvReaderDelAdd,
