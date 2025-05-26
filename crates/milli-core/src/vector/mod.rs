@@ -19,7 +19,6 @@ use crate::ThreadPoolNoAbort;
 
 pub mod composite;
 pub mod error;
-pub mod hf;
 pub mod json_template;
 pub mod manual;
 pub mod openai;
@@ -543,8 +542,6 @@ impl<F> Embeddings<F> {
 /// An embedder can be used to transform text into embeddings.
 #[derive(Debug)]
 pub enum Embedder {
-    /// An embedder based on running local models, fetched from the Hugging Face Hub.
-    HuggingFace(hf::Embedder),
     /// An embedder based on making embedding queries against the OpenAI API.
     OpenAi(openai::Embedder),
     /// An embedder based on the user providing the embeddings in the documents and queries.
@@ -598,7 +595,7 @@ impl EmbeddingCache {
 }
 
 /// Configuration for an embedder.
-#[derive(Debug, Clone, Default, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
 pub struct EmbeddingConfig {
     /// Options of the embedder, specific to each kind of embedder
     pub embedder_options: EmbedderOptions,
@@ -659,18 +656,11 @@ impl IntoIterator for EmbeddingConfigs {
 /// Options of an embedder, specific to each kind of embedder.
 #[derive(Debug, Clone, Hash, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
 pub enum EmbedderOptions {
-    HuggingFace(hf::EmbedderOptions),
     OpenAi(openai::EmbedderOptions),
     Ollama(ollama::EmbedderOptions),
     UserProvided(manual::EmbedderOptions),
     Rest(rest::EmbedderOptions),
     Composite(composite::EmbedderOptions),
-}
-
-impl Default for EmbedderOptions {
-    fn default() -> Self {
-        Self::HuggingFace(Default::default())
-    }
 }
 
 impl Embedder {
@@ -680,9 +670,6 @@ impl Embedder {
         cache_cap: usize,
     ) -> std::result::Result<Self, NewEmbedderError> {
         Ok(match options {
-            EmbedderOptions::HuggingFace(options) => {
-                Self::HuggingFace(hf::Embedder::new(options, cache_cap)?)
-            }
             EmbedderOptions::OpenAi(options) => {
                 Self::OpenAi(openai::Embedder::new(options, cache_cap)?)
             }
@@ -718,7 +705,6 @@ impl Embedder {
             }
         }
         let embedding = match self {
-            Embedder::HuggingFace(embedder) => embedder.embed_one(text),
             Embedder::OpenAi(embedder) => {
                 embedder.embed(&[text], deadline)?.pop().ok_or_else(EmbedError::missing_embedding)
             }
@@ -749,7 +735,6 @@ impl Embedder {
         threads: &ThreadPoolNoAbort,
     ) -> std::result::Result<Vec<Vec<Embedding>>, EmbedError> {
         match self {
-            Embedder::HuggingFace(embedder) => embedder.embed_index(text_chunks),
             Embedder::OpenAi(embedder) => embedder.embed_index(text_chunks, threads),
             Embedder::Ollama(embedder) => embedder.embed_index(text_chunks, threads),
             Embedder::UserProvided(embedder) => embedder.embed_index(text_chunks),
@@ -765,7 +750,6 @@ impl Embedder {
         threads: &ThreadPoolNoAbort,
     ) -> std::result::Result<Vec<Embedding>, EmbedError> {
         match self {
-            Embedder::HuggingFace(embedder) => embedder.embed_index_ref(texts),
             Embedder::OpenAi(embedder) => embedder.embed_index_ref(texts, threads),
             Embedder::Ollama(embedder) => embedder.embed_index_ref(texts, threads),
             Embedder::UserProvided(embedder) => embedder.embed_index_ref(texts),
@@ -777,7 +761,6 @@ impl Embedder {
     /// Indicates the preferred number of chunks to pass to [`Self::embed_chunks`]
     pub fn chunk_count_hint(&self) -> usize {
         match self {
-            Embedder::HuggingFace(embedder) => embedder.chunk_count_hint(),
             Embedder::OpenAi(embedder) => embedder.chunk_count_hint(),
             Embedder::Ollama(embedder) => embedder.chunk_count_hint(),
             Embedder::UserProvided(_) => 100,
@@ -789,7 +772,6 @@ impl Embedder {
     /// Indicates the preferred number of texts in a single chunk passed to [`Self::embed`]
     pub fn prompt_count_in_chunk_hint(&self) -> usize {
         match self {
-            Embedder::HuggingFace(embedder) => embedder.prompt_count_in_chunk_hint(),
             Embedder::OpenAi(embedder) => embedder.prompt_count_in_chunk_hint(),
             Embedder::Ollama(embedder) => embedder.prompt_count_in_chunk_hint(),
             Embedder::UserProvided(_) => 1,
@@ -801,7 +783,6 @@ impl Embedder {
     /// Indicates the dimensions of a single embedding produced by the embedder.
     pub fn dimensions(&self) -> usize {
         match self {
-            Embedder::HuggingFace(embedder) => embedder.dimensions(),
             Embedder::OpenAi(embedder) => embedder.dimensions(),
             Embedder::Ollama(embedder) => embedder.dimensions(),
             Embedder::UserProvided(embedder) => embedder.dimensions(),
@@ -813,7 +794,6 @@ impl Embedder {
     /// An optional distribution used to apply an affine transformation to the similarity score of a document.
     pub fn distribution(&self) -> Option<DistributionShift> {
         match self {
-            Embedder::HuggingFace(embedder) => embedder.distribution(),
             Embedder::OpenAi(embedder) => embedder.distribution(),
             Embedder::Ollama(embedder) => embedder.distribution(),
             Embedder::UserProvided(embedder) => embedder.distribution(),
@@ -824,10 +804,7 @@ impl Embedder {
 
     pub fn uses_document_template(&self) -> bool {
         match self {
-            Embedder::HuggingFace(_)
-            | Embedder::OpenAi(_)
-            | Embedder::Ollama(_)
-            | Embedder::Rest(_) => true,
+            Embedder::OpenAi(_) | Embedder::Ollama(_) | Embedder::Rest(_) => true,
             Embedder::UserProvided(_) => false,
             Embedder::Composite(embedder) => embedder.index.uses_document_template(),
         }
@@ -835,7 +812,6 @@ impl Embedder {
 
     fn cache(&self) -> Option<&EmbeddingCache> {
         match self {
-            Embedder::HuggingFace(embedder) => Some(embedder.cache()),
             Embedder::OpenAi(embedder) => Some(embedder.cache()),
             Embedder::UserProvided(_) => None,
             Embedder::Ollama(embedder) => Some(embedder.cache()),

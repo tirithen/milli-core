@@ -2770,8 +2770,6 @@ mod tests {
                     Setting::Set(EmbeddingSettings {
                         source: Setting::Set(crate::vector::settings::EmbedderSource::UserProvided),
                         model: Setting::NotSet,
-                        revision: Setting::NotSet,
-                        pooling: Setting::NotSet,
                         api_key: Setting::NotSet,
                         dimensions: Setting::Set(3),
                         document_template: Setting::NotSet,

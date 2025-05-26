@@ -42,7 +42,6 @@ pub struct EmbeddingConfig {
 /// Options of an embedder, specific to each kind of embedder.
 #[derive(Debug, Clone, Hash, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
 pub enum EmbedderOptions {
-    HuggingFace(hf::EmbedderOptions),
     OpenAi(openai::EmbedderOptions),
     Ollama(ollama::EmbedderOptions),
     UserProvided(manual::EmbedderOptions),

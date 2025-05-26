@@ -519,7 +519,6 @@ impl EmbeddersAnalytics {
                 use meilisearch_types::milli::vector::settings::EmbedderSource;
                 match source {
                     EmbedderSource::OpenAi => sources.insert("openAi".to_string()),
-                    EmbedderSource::HuggingFace => sources.insert("huggingFace".to_string()),
                     EmbedderSource::UserProvided => sources.insert("userProvided".to_string()),
                     EmbedderSource::Ollama => sources.insert("ollama".to_string()),
                     EmbedderSource::Rest => sources.insert("rest".to_string()),

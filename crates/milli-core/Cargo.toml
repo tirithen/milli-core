@@ -67,8 +67,6 @@ csv = "1.3.1"
 candle-core = { version = "0.8.2" }
 candle-transformers = { version = "0.8.2" }
 candle-nn = { version = "0.8.2" }
-tokenizers = "0.15.2"
-hf-hub = "0.4.2"
 tiktoken-rs = "0.6.0"
 liquid = "0.26.9"
 rhai = { "version" = "1.21.0", features = [

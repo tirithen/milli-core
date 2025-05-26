@@ -52,8 +52,6 @@ async fn bad_parameters() {
     // model
     // - openai
     parameter_test!(server, openAi, model);
-    // - huggingFace
-    parameter_test!(server, huggingFace, model);
     // - userProvided
     parameter_test!(server, userProvided, model);
     // - ollama
@@ -62,37 +60,9 @@ async fn bad_parameters() {
     parameter_test!(server, rest, model);
     // ==
 
-    // revision
-    // - openai
-    parameter_test!(server, openAi, revision);
-    // - huggingFace
-    parameter_test!(server, huggingFace, revision);
-    // - userProvided
-    parameter_test!(server, userProvided, revision);
-    // - ollama
-    parameter_test!(server, ollama, revision);
-    // - rest
-    parameter_test!(server, rest, revision);
-    // ==
-
-    // pooling
-    // - openai
-    parameter_test!(server, openAi, pooling);
-    // - huggingFace
-    parameter_test!(server, huggingFace, pooling);
-    // - userProvided
-    parameter_test!(server, userProvided, pooling);
-    // - ollama
-    parameter_test!(server, ollama, pooling);
-    // - rest
-    parameter_test!(server, rest, pooling);
-    // ==
-
     // apiKey
     // - openai
     parameter_test!(server, openAi, apiKey);
-    // - huggingFace
-    parameter_test!(server, huggingFace, apiKey);
     // - userProvided
     parameter_test!(server, userProvided, apiKey);
     // - ollama
@@ -104,8 +74,6 @@ async fn bad_parameters() {
     // dimensions
     // - openai
     parameter_test!(server, openAi, dimensions);
-    // - huggingFace
-    parameter_test!(server, huggingFace, dimensions);
     // - userProvided
     parameter_test!(server, userProvided, dimensions);
     // - ollama
@@ -117,8 +85,6 @@ async fn bad_parameters() {
     // binaryQuantized
     // - openai
     parameter_test!(server, openAi, binaryQuantized);
-    // - huggingFace
-    parameter_test!(server, huggingFace, binaryQuantized);
     // - userProvided
     parameter_test!(server, userProvided, binaryQuantized);
     // - ollama
@@ -138,8 +104,6 @@ async fn bad_parameters_2() {
     // documentTemplate
     // - openai
     parameter_test!(server, openAi, documentTemplate);
-    // - huggingFace
-    parameter_test!(server, huggingFace, documentTemplate);
     // - userProvided
     parameter_test!(server, userProvided, documentTemplate);
     // - ollama
@@ -151,8 +115,6 @@ async fn bad_parameters_2() {
     // documentTemplateMaxBytes
     // - openai
     parameter_test!(server, openAi, documentTemplateMaxBytes);
-    // - huggingFace
-    parameter_test!(server, huggingFace, documentTemplateMaxBytes);
     // - userProvided
     parameter_test!(server, userProvided, documentTemplateMaxBytes);
     // - ollama
@@ -164,8 +126,6 @@ async fn bad_parameters_2() {
     // url
     // - openai
     parameter_test!(server, openAi, url);
-    // - huggingFace
-    parameter_test!(server, huggingFace, url);
     // - userProvided
     parameter_test!(server, userProvided, url);
     // - ollama
@@ -177,8 +137,6 @@ async fn bad_parameters_2() {
     // request
     // - openai
     parameter_test!(server, openAi, request);
-    // - huggingFace
-    parameter_test!(server, huggingFace, request);
     // - userProvided
     parameter_test!(server, userProvided, request);
     // - ollama
@@ -190,8 +148,6 @@ async fn bad_parameters_2() {
     // response
     // - openai
     parameter_test!(server, openAi, response);
-    // - huggingFace
-    parameter_test!(server, huggingFace, response);
     // - userProvided
     parameter_test!(server, userProvided, response);
     // - ollama
@@ -203,8 +159,6 @@ async fn bad_parameters_2() {
     // headers
     // - openai
     parameter_test!(server, openAi, headers);
-    // - huggingFace
-    parameter_test!(server, huggingFace, headers);
     // - userProvided
     parameter_test!(server, userProvided, headers);
     // - ollama
@@ -216,8 +170,6 @@ async fn bad_parameters_2() {
     // distribution
     // - openai
     parameter_test!(server, openAi, distribution);
-    // - huggingFace
-    parameter_test!(server, huggingFace, distribution);
     // - userProvided
     parameter_test!(server, userProvided, distribution);
     // - ollama
@@ -230,7 +182,6 @@ async fn bad_parameters_2() {
 fn base_for_source(source: &'static str) -> Value {
     let base_parameters = maplit::btreemap! {
         "openAi" => vec![],
-        "huggingFace" => vec![],
         "userProvided" => vec!["dimensions"],
         "ollama" => vec!["model",
             // add dimensions to avoid actually fetching the model from ollama
@@ -254,8 +205,6 @@ fn base_for_source(source: &'static str) -> Value {
 fn valid_parameter(source: &'static str, parameter: &'static str) -> Value {
     match (source, parameter) {
         ("openAi", "model") => crate::json!("text-embedding-ada-002"),
-        ("openAi", "revision") => crate::json!("2023-05-15"),
-        ("openAi", "pooling") => crate::json!("mean"),
         ("openAi", "apiKey") => crate::json!("test"),
         ("openAi", "dimensions") => crate::json!(1), // Use minimal dimension to avoid model download
         ("openAi", "binaryQuantized") => crate::json!(false),
@@ -266,22 +215,7 @@ fn valid_parameter(source: &'static str, parameter: &'static str) -> Value {
         ("openAi", "response") => crate::json!({ "test": "test" }),
         ("openAi", "headers") => crate::json!({ "test": "test" }),
         ("openAi", "distribution") => crate::json!("normal"),
-        ("huggingFace", "model") => crate::json!("test"),
-        ("huggingFace", "revision") => crate::json!("test"),
-        ("huggingFace", "pooling") => crate::json!("mean"),
-        ("huggingFace", "apiKey") => crate::json!("test"),
-        ("huggingFace", "dimensions") => crate::json!(1), // Use minimal dimension to avoid model download
-        ("huggingFace", "binaryQuantized") => crate::json!(false),
-        ("huggingFace", "documentTemplate") => crate::json!("test"),
-        ("huggingFace", "documentTemplateMaxBytes") => crate::json!(100),
-        ("huggingFace", "url") => crate::json!("http://test"),
-        ("huggingFace", "request") => crate::json!({ "test": "test" }),
-        ("huggingFace", "response") => crate::json!({ "test": "test" }),
-        ("huggingFace", "headers") => crate::json!({ "test": "test" }),
-        ("huggingFace", "distribution") => crate::json!("normal"),
         ("userProvided", "model") => crate::json!("test"),
-        ("userProvided", "revision") => crate::json!("test"),
-        ("userProvided", "pooling") => crate::json!("mean"),
         ("userProvided", "apiKey") => crate::json!("test"),
         ("userProvided", "dimensions") => crate::json!(1), // Use minimal dimension to avoid model download
         ("userProvided", "binaryQuantized") => crate::json!(false),
@@ -293,8 +227,6 @@ fn valid_parameter(source: &'static str, parameter: &'static str) -> Value {
         ("userProvided", "headers") => crate::json!({ "test": "test" }),
         ("userProvided", "distribution") => crate::json!("normal"),
         ("ollama", "model") => crate::json!("test"),
-        ("ollama", "revision") => crate::json!("test"),
-        ("ollama", "pooling") => crate::json!("mean"),
         ("ollama", "apiKey") => crate::json!("test"),
         ("ollama", "dimensions") => crate::json!(1), // Use minimal dimension to avoid model download
         ("ollama", "binaryQuantized") => crate::json!(false),
@@ -306,8 +238,6 @@ fn valid_parameter(source: &'static str, parameter: &'static str) -> Value {
         ("ollama", "headers") => crate::json!({ "test": "test" }),
         ("ollama", "distribution") => crate::json!("normal"),
         ("rest", "model") => crate::json!("test"),
-        ("rest", "revision") => crate::json!("test"),
-        ("rest", "pooling") => crate::json!("mean"),
         ("rest", "apiKey") => crate::json!("test"),
         ("rest", "dimensions") => crate::json!(1), // Use minimal dimension to avoid model download
         ("rest", "binaryQuantized") => crate::json!(false),

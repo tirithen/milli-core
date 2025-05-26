@@ -2,11 +2,9 @@ use std::collections::BTreeMap;
 use std::path::PathBuf;
 
 use bumpalo::Bump;
-use hf_hub::api::sync::ApiError;
 
 use super::parsed_vectors::ParsedVectorsDiff;
 use super::rest::ConfigurationSource;
-use super::MAX_COMPOSITE_DISTANCE;
 use crate::error::FaultSource;
 use crate::update::new::vector_document::VectorDocument;
 use crate::{FieldDistribution, PanicCatched};
@@ -263,31 +261,6 @@ impl NewEmbedderError {
         }
     }
 
-    pub fn open_pooling_config(
-        pooling_config_filename: PathBuf,
-        inner: std::io::Error,
-    ) -> NewEmbedderError {
-        let open_config = OpenPoolingConfig { filename: pooling_config_filename, inner };
-
-        Self {
-            kind: NewEmbedderErrorKind::OpenPoolingConfig(open_config),
-            fault: FaultSource::Runtime,
-        }
-    }
-
-    pub fn deserialize_pooling_config(
-        model_name: String,
-        pooling_config_filename: PathBuf,
-        inner: serde_json::Error,
-    ) -> NewEmbedderError {
-        let deserialize_pooling_config =
-            DeserializePoolingConfig { model_name, filename: pooling_config_filename, inner };
-        Self {
-            kind: NewEmbedderErrorKind::DeserializePoolingConfig(deserialize_pooling_config),
-            fault: FaultSource::Runtime,
-        }
-    }
-
     pub fn open_tokenizer(
         tokenizer_filename: PathBuf,
         inner: Box<dyn std::error::Error + Send + Sync>,
@@ -297,14 +270,6 @@ impl NewEmbedderError {
             kind: NewEmbedderErrorKind::OpenTokenizer(open_tokenizer),
             fault: FaultSource::Runtime,
         }
-    }
-
-    pub fn new_api_fail(inner: ApiError) -> Self {
-        Self { kind: NewEmbedderErrorKind::NewApiFail(inner), fault: FaultSource::Bug }
-    }
-
-    pub fn api_get(inner: ApiError) -> Self {
-        Self { kind: NewEmbedderErrorKind::ApiGet(inner), fault: FaultSource::Undecided }
     }
 
     pub fn pytorch_weight(inner: candle_core::Error) -> Self {
@@ -370,41 +335,6 @@ impl NewEmbedderError {
                 index_count,
             },
             fault: FaultSource::Runtime,
-        }
-    }
-
-    pub(crate) fn composite_embedding_value_mismatch(
-        distance: f32,
-        hint: CompositeEmbedderContainsHuggingFace,
-    ) -> NewEmbedderError {
-        Self {
-            kind: NewEmbedderErrorKind::CompositeEmbeddingValueMismatch { distance, hint },
-            fault: FaultSource::User,
-        }
-    }
-}
-
-#[derive(Debug, Clone, Copy)]
-pub enum CompositeEmbedderContainsHuggingFace {
-    Both,
-    Search,
-    Indexing,
-    None,
-}
-
-impl std::fmt::Display for CompositeEmbedderContainsHuggingFace {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            CompositeEmbedderContainsHuggingFace::Both => f.write_str(
-                "\n  - Make sure the `model`, `revision` and `pooling` of both embedders match.",
-            ),
-            CompositeEmbedderContainsHuggingFace::Search => f.write_str(
-                "\n  - Consider trying a different `pooling` method for the search embedder.",
-            ),
-            CompositeEmbedderContainsHuggingFace::Indexing => f.write_str(
-                "\n  - Consider trying a different `pooling` method for the indexing embedder.",
-            ),
-            CompositeEmbedderContainsHuggingFace::None => Ok(()),
         }
     }
 }
@@ -479,10 +409,7 @@ pub enum NewEmbedderErrorKind {
     PytorchWeight(candle_core::Error),
     #[error("could not build weights from Safetensor weights:\n  - {0}")]
     SafetensorWeight(candle_core::Error),
-    #[error("could not spawn HG_HUB API client:\n  - {0}")]
-    NewApiFail(ApiError),
-    #[error("fetching file from HG_HUB failed:\n  - {0}")]
-    ApiGet(ApiError),
+
     #[error("could not determine model dimensions:\n  - test embedding failed with {0}")]
     CouldNotDetermineDimension(EmbedError),
     #[error("loading model failed:\n  - {0}")]
@@ -497,8 +424,6 @@ pub enum NewEmbedderErrorKind {
     CompositeTestEmbeddingFailed { inner: EmbedError, failing_embedder: &'static str },
     #[error("error while generating test embeddings.\n  - the number of generated embeddings differs.\n  - {search_count} embeddings for the search time embedder.\n  - {index_count} embeddings for the indexing time embedder.")]
     CompositeEmbeddingCountMismatch { search_count: usize, index_count: usize },
-    #[error("error while generating test embeddings.\n  - the embeddings produced at search time and indexing time are not similar enough.\n  - angular distance {distance:.2}\n  - Meilisearch requires a maximum distance of {MAX_COMPOSITE_DISTANCE}.\n  - Note: check that both embedders produce similar embeddings.{hint}")]
-    CompositeEmbeddingValueMismatch { distance: f32, hint: CompositeEmbedderContainsHuggingFace },
 }
 
 pub struct PossibleEmbeddingMistakes {

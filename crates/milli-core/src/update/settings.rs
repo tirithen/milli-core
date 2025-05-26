@@ -1182,25 +1182,8 @@ impl<'a, 't, 'i> Settings<'a, 't, 'i> {
                 self.index.embedder_category_id.put(self.wtxn, name, &id)?;
             }
         }
-        let updated_configs: Vec<IndexEmbeddingConfig> = updated_configs
-            .into_iter()
-            .filter_map(|(name, (config, user_provided))| match config {
-                Setting::Set(config) => {
-                    Some(IndexEmbeddingConfig { name, config: config.into(), user_provided })
-                }
-                Setting::Reset => None,
-                Setting::NotSet => Some(IndexEmbeddingConfig {
-                    name,
-                    config: EmbeddingSettings::default().into(),
-                    user_provided,
-                }),
-            })
-            .collect();
-        if updated_configs.is_empty() {
-            self.index.delete_embedding_configs(self.wtxn)?;
-        } else {
-            self.index.put_embedding_configs(self.wtxn, updated_configs)?;
-        }
+        self.index.delete_embedding_configs(self.wtxn)?;
+
         Ok(embedder_actions)
     }
 
@@ -1725,8 +1708,6 @@ pub fn validate_embedding_settings(
     let EmbeddingSettings {
         source,
         model,
-        revision,
-        pooling,
         api_key,
         dimensions,
         document_template,
@@ -1772,8 +1753,6 @@ pub fn validate_embedding_settings(
         return Ok(Setting::Set(EmbeddingSettings {
             source,
             model,
-            revision,
-            pooling,
             api_key,
             dimensions,
             document_template,
@@ -1793,8 +1772,6 @@ pub fn validate_embedding_settings(
         inferred_source,
         NestingContext::NotNested,
         &model,
-        &revision,
-        &pooling,
         &dimensions,
         &api_key,
         &url,
@@ -1840,10 +1817,7 @@ pub fn validate_embedding_settings(
                 }
             }
         }
-        EmbedderSource::Ollama
-        | EmbedderSource::HuggingFace
-        | EmbedderSource::UserProvided
-        | EmbedderSource::Rest => {}
+        EmbedderSource::Ollama | EmbedderSource::UserProvided | EmbedderSource::Rest => {}
         EmbedderSource::Composite => {
             if let Setting::Set(embedder) = &search_embedder {
                 if let Some(source) = embedder.source.set() {
@@ -1871,8 +1845,6 @@ pub fn validate_embedding_settings(
                         source,
                         NestingContext::Search,
                         &embedder.model,
-                        &embedder.revision,
-                        &embedder.pooling,
                         &embedder.dimensions,
                         &embedder.api_key,
                         &embedder.url,
@@ -1926,8 +1898,6 @@ pub fn validate_embedding_settings(
                         source,
                         NestingContext::Indexing,
                         &embedder.model,
-                        &embedder.revision,
-                        &embedder.pooling,
                         &embedder.dimensions,
                         &embedder.api_key,
                         &embedder.url,
@@ -1956,8 +1926,6 @@ pub fn validate_embedding_settings(
     Ok(Setting::Set(EmbeddingSettings {
         source,
         model,
-        revision,
-        pooling,
         api_key,
         dimensions,
         document_template,

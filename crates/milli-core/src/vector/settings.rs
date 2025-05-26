@@ -1,5 +1,4 @@
 use std::collections::BTreeMap;
-use std::num::NonZeroUsize;
 
 use deserr::Deserr;
 use roaring::RoaringBitmap;
@@ -7,9 +6,8 @@ use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 use super::composite::SubEmbedderOptions;
-use super::hf::OverridePooling;
 use super::{ollama, openai, DistributionShift, EmbedderOptions};
-use crate::prompt::{default_max_bytes, PromptData};
+use crate::prompt::default_max_bytes;
 use crate::update::Setting;
 use crate::vector::EmbeddingConfig;
 use crate::UserError;
@@ -44,7 +42,7 @@ pub struct EmbeddingSettings {
     ///
     /// # Availability
     ///
-    /// - This parameter is available for sources `openAi`, `huggingFace`, `ollama`
+    /// - This parameter is available for sources `openAi`, `ollama`
     ///
     /// # 🔄 Reindexing
     ///
@@ -53,49 +51,7 @@ pub struct EmbeddingSettings {
     /// # Defaults
     ///
     /// - For source `openAi`, defaults to `text-embedding-3-small`
-    /// - For source `huggingFace`, defaults to `BAAI/bge-base-en-v1.5`
     pub model: Setting<String>,
-    #[serde(default, skip_serializing_if = "Setting::is_not_set")]
-    #[deserr(default)]
-    #[schema(value_type = Option<String>)]
-    /// The revision (commit SHA1) of the model to use.
-    ///
-    /// If unspecified, Meilisearch picks the latest revision of the model.
-    ///
-    /// # Availability
-    ///
-    /// - This parameter is available for source `huggingFace`
-    ///
-    /// # 🔄 Reindexing
-    ///
-    /// - 🏗️ Changing the value of this parameter always regenerates embeddings
-    ///
-    /// # Defaults
-    ///
-    /// - When `model` is set to default, defaults to `617ca489d9e86b49b8167676d8220688b99db36e`
-    /// - Otherwise, defaults to `null`
-    pub revision: Setting<String>,
-    #[serde(default, skip_serializing_if = "Setting::is_not_set")]
-    #[deserr(default)]
-    #[schema(value_type = Option<OverridePooling>)]
-    /// The pooling method to use.
-    ///
-    /// # Availability
-    ///
-    /// - This parameter is available for source `huggingFace`
-    ///
-    /// # 🔄 Reindexing
-    ///
-    /// - 🏗️ Changing the value of this parameter always regenerates embeddings
-    ///
-    /// # Defaults
-    ///
-    /// - Defaults to `useModel`
-    ///
-    /// # Compatibility Note
-    ///
-    /// - Embedders created before this parameter was available default to `forceMean` to preserve the existing behavior.
-    pub pooling: Setting<OverridePooling>,
     #[serde(default, skip_serializing_if = "Setting::is_not_set")]
     #[deserr(default)]
     #[schema(value_type = Option<String>)]
@@ -177,7 +133,7 @@ pub struct EmbeddingSettings {
     ///
     /// # Availability
     ///
-    /// - This parameter is available for source `openAi`, `huggingFace`, `ollama` and `rest
+    /// - This parameter is available for source `openAi`, `ollama` and `rest
     ///
     /// # 🔄 Reindexing
     ///
@@ -190,7 +146,7 @@ pub struct EmbeddingSettings {
     ///
     /// # Availability
     ///
-    /// - This parameter is available for source `openAi`, `huggingFace`, `ollama` and `rest`
+    /// - This parameter is available for source `openAi`, `ollama` and `rest`
     ///
     /// # 🔄 Reindexing
     ///
@@ -322,7 +278,7 @@ pub struct SubEmbeddingSettings {
     ///
     /// # Availability
     ///
-    /// - This parameter is available for sources `openAi`, `huggingFace`, `ollama`
+    /// - This parameter is available for sources `openAi`, `ollama`
     ///
     /// # 🔄 Reindexing
     ///
@@ -331,49 +287,7 @@ pub struct SubEmbeddingSettings {
     /// # Defaults
     ///
     /// - For source `openAi`, defaults to `text-embedding-3-small`
-    /// - For source `huggingFace`, defaults to `BAAI/bge-base-en-v1.5`
     pub model: Setting<String>,
-    #[serde(default, skip_serializing_if = "Setting::is_not_set")]
-    #[deserr(default)]
-    #[schema(value_type = Option<String>)]
-    /// The revision (commit SHA1) of the model to use.
-    ///
-    /// If unspecified, Meilisearch picks the latest revision of the model.
-    ///
-    /// # Availability
-    ///
-    /// - This parameter is available for source `huggingFace`
-    ///
-    /// # 🔄 Reindexing
-    ///
-    /// - 🏗️ Changing the value of this parameter always regenerates embeddings
-    ///
-    /// # Defaults
-    ///
-    /// - When `model` is set to default, defaults to `617ca489d9e86b49b8167676d8220688b99db36e`
-    /// - Otherwise, defaults to `null`
-    pub revision: Setting<String>,
-    #[serde(default, skip_serializing_if = "Setting::is_not_set")]
-    #[deserr(default)]
-    #[schema(value_type = Option<OverridePooling>)]
-    /// The pooling method to use.
-    ///
-    /// # Availability
-    ///
-    /// - This parameter is available for source `huggingFace`
-    ///
-    /// # 🔄 Reindexing
-    ///
-    /// - 🏗️ Changing the value of this parameter always regenerates embeddings
-    ///
-    /// # Defaults
-    ///
-    /// - Defaults to `useModel`
-    ///
-    /// # Compatibility Note
-    ///
-    /// - Embedders created before this parameter was available default to `forceMean` to preserve the existing behavior.
-    pub pooling: Setting<OverridePooling>,
     #[serde(default, skip_serializing_if = "Setting::is_not_set")]
     #[deserr(default)]
     #[schema(value_type = Option<String>)]
@@ -429,7 +343,7 @@ pub struct SubEmbeddingSettings {
     ///
     /// # Availability
     ///
-    /// - This parameter is available for source `openAi`, `huggingFace`, `ollama` and `rest
+    /// - This parameter is available for source `openAi`, `ollama` and `rest
     ///
     /// # 🔄 Reindexing
     ///
@@ -442,7 +356,7 @@ pub struct SubEmbeddingSettings {
     ///
     /// # Availability
     ///
-    /// - This parameter is available for source `openAi`, `huggingFace`, `ollama` and `rest`
+    /// - This parameter is available for source `openAi`, `ollama` and `rest`
     ///
     /// # 🔄 Reindexing
     ///
@@ -616,8 +530,6 @@ impl SettingsDiff {
                 let EmbeddingSettings {
                     mut source,
                     mut model,
-                    mut revision,
-                    mut pooling,
                     mut api_key,
                     mut dimensions,
                     mut document_template,
@@ -635,8 +547,6 @@ impl SettingsDiff {
                 let EmbeddingSettings {
                     source: new_source,
                     model: new_model,
-                    revision: new_revision,
-                    pooling: new_pooling,
                     api_key: new_api_key,
                     dimensions: new_dimensions,
                     document_template: new_document_template,
@@ -665,8 +575,6 @@ impl SettingsDiff {
                     &mut reindex_action,
                     &mut source,
                     &mut model,
-                    &mut revision,
-                    &mut pooling,
                     &mut api_key,
                     &mut dimensions,
                     &mut document_template,
@@ -677,8 +585,6 @@ impl SettingsDiff {
                     &mut headers,
                     new_source,
                     new_model,
-                    new_revision,
-                    new_pooling,
                     new_api_key,
                     new_dimensions,
                     new_document_template,
@@ -704,8 +610,6 @@ impl SettingsDiff {
                 let updated_settings = EmbeddingSettings {
                     source,
                     model,
-                    revision,
-                    pooling,
                     api_key,
                     dimensions,
                     document_template,
@@ -750,8 +654,6 @@ impl SettingsDiff {
                 let Setting::Set(SubEmbeddingSettings {
                     mut source,
                     mut model,
-                    mut revision,
-                    mut pooling,
                     mut api_key,
                     mut dimensions,
                     mut document_template,
@@ -775,8 +677,6 @@ impl SettingsDiff {
                 let SubEmbeddingSettings {
                     source: new_source,
                     model: new_model,
-                    revision: new_revision,
-                    pooling: new_pooling,
                     api_key: new_api_key,
                     dimensions: new_dimensions,
                     document_template: new_document_template,
@@ -795,8 +695,6 @@ impl SettingsDiff {
                     reindex_action,
                     &mut source,
                     &mut model,
-                    &mut revision,
-                    &mut pooling,
                     &mut api_key,
                     &mut dimensions,
                     &mut document_template,
@@ -807,8 +705,6 @@ impl SettingsDiff {
                     &mut headers,
                     new_source,
                     new_model,
-                    new_revision,
-                    new_pooling,
                     new_api_key,
                     new_dimensions,
                     new_document_template,
@@ -828,8 +724,6 @@ impl SettingsDiff {
                 let updated_settings = SubEmbeddingSettings {
                     source,
                     model,
-                    revision,
-                    pooling,
                     api_key,
                     dimensions,
                     document_template,
@@ -856,8 +750,6 @@ impl SettingsDiff {
         reindex_action: &mut Option<ReindexAction>,
         source: &mut Setting<EmbedderSource>,
         model: &mut Setting<String>,
-        revision: &mut Setting<String>,
-        pooling: &mut Setting<OverridePooling>,
         api_key: &mut Setting<String>,
         dimensions: &mut Setting<usize>,
         document_template: &mut Setting<String>,
@@ -868,8 +760,6 @@ impl SettingsDiff {
         headers: &mut Setting<BTreeMap<String, String>>,
         new_source: Setting<EmbedderSource>,
         new_model: Setting<String>,
-        new_revision: Setting<String>,
-        new_pooling: Setting<OverridePooling>,
         new_api_key: Setting<String>,
         new_dimensions: Setting<usize>,
         new_document_template: Setting<String>,
@@ -886,8 +776,6 @@ impl SettingsDiff {
             apply_default_for_source(
                 &*source,
                 model,
-                revision,
-                pooling,
                 dimensions,
                 url,
                 request,
@@ -901,12 +789,6 @@ impl SettingsDiff {
             )
         }
         if model.apply(new_model) {
-            ReindexAction::push_action(reindex_action, ReindexAction::FullReindex);
-        }
-        if revision.apply(new_revision) {
-            ReindexAction::push_action(reindex_action, ReindexAction::FullReindex);
-        }
-        if pooling.apply(new_pooling) {
             ReindexAction::push_action(reindex_action, ReindexAction::FullReindex);
         }
         if dimensions.apply(new_dimensions) {
@@ -972,8 +854,6 @@ impl ReindexAction {
 fn apply_default_for_source(
     source: &Setting<EmbedderSource>,
     model: &mut Setting<String>,
-    revision: &mut Setting<String>,
-    pooling: &mut Setting<OverridePooling>,
     dimensions: &mut Setting<usize>,
     url: &mut Setting<String>,
     request: &mut Setting<serde_json::Value>,
@@ -985,22 +865,8 @@ fn apply_default_for_source(
     indexing_embedder: &mut Setting<SubEmbeddingSettings>,
 ) {
     match source {
-        Setting::Set(EmbedderSource::HuggingFace) => {
-            *model = Setting::Reset;
-            *revision = Setting::Reset;
-            *pooling = Setting::Reset;
-            *dimensions = Setting::NotSet;
-            *url = Setting::NotSet;
-            *request = Setting::NotSet;
-            *response = Setting::NotSet;
-            *headers = Setting::NotSet;
-            *search_embedder = Setting::NotSet;
-            *indexing_embedder = Setting::NotSet;
-        }
         Setting::Set(EmbedderSource::Ollama) => {
             *model = Setting::Reset;
-            *revision = Setting::NotSet;
-            *pooling = Setting::NotSet;
             *dimensions = Setting::Reset;
             *url = Setting::NotSet;
             *request = Setting::NotSet;
@@ -1011,8 +877,6 @@ fn apply_default_for_source(
         }
         Setting::Set(EmbedderSource::OpenAi) | Setting::Reset => {
             *model = Setting::Reset;
-            *revision = Setting::NotSet;
-            *pooling = Setting::NotSet;
             *dimensions = Setting::NotSet;
             *url = Setting::Reset;
             *request = Setting::NotSet;
@@ -1023,8 +887,6 @@ fn apply_default_for_source(
         }
         Setting::Set(EmbedderSource::Rest) => {
             *model = Setting::NotSet;
-            *revision = Setting::NotSet;
-            *pooling = Setting::NotSet;
             *dimensions = Setting::Reset;
             *url = Setting::Reset;
             *request = Setting::Reset;
@@ -1035,8 +897,6 @@ fn apply_default_for_source(
         }
         Setting::Set(EmbedderSource::UserProvided) => {
             *model = Setting::NotSet;
-            *revision = Setting::NotSet;
-            *pooling = Setting::NotSet;
             *dimensions = Setting::Reset;
             *url = Setting::NotSet;
             *request = Setting::NotSet;
@@ -1049,8 +909,6 @@ fn apply_default_for_source(
         }
         Setting::Set(EmbedderSource::Composite) => {
             *model = Setting::NotSet;
-            *revision = Setting::NotSet;
-            *pooling = Setting::NotSet;
             *dimensions = Setting::NotSet;
             *url = Setting::NotSet;
             *request = Setting::NotSet;
@@ -1112,8 +970,6 @@ impl NestingContext {
 pub enum MetaEmbeddingSetting {
     Source,
     Model,
-    Revision,
-    Pooling,
     ApiKey,
     Dimensions,
     DocumentTemplate,
@@ -1134,8 +990,6 @@ impl MetaEmbeddingSetting {
         match self {
             Source => "source",
             Model => "model",
-            Revision => "revision",
-            Pooling => "pooling",
             ApiKey => "apiKey",
             Dimensions => "dimensions",
             DocumentTemplate => "documentTemplate",
@@ -1159,8 +1013,6 @@ impl EmbeddingSettings {
         source: EmbedderSource,
         context: NestingContext,
         model: &Setting<String>,
-        revision: &Setting<String>,
-        pooling: &Setting<OverridePooling>,
         dimensions: &Setting<usize>,
         api_key: &Setting<String>,
         url: &Setting<String>,
@@ -1175,20 +1027,6 @@ impl EmbeddingSettings {
         distribution: &Setting<DistributionShift>,
     ) -> Result<(), UserError> {
         Self::check_setting(embedder_name, source, MetaEmbeddingSetting::Model, context, model)?;
-        Self::check_setting(
-            embedder_name,
-            source,
-            MetaEmbeddingSetting::Revision,
-            context,
-            revision,
-        )?;
-        Self::check_setting(
-            embedder_name,
-            source,
-            MetaEmbeddingSetting::Pooling,
-            context,
-            pooling,
-        )?;
         Self::check_setting(
             embedder_name,
             source,
@@ -1334,42 +1172,23 @@ impl EmbeddingSettings {
                 | Url,
                 _,
             ) => FieldStatus::Allowed,
-            (
-                OpenAi,
-                Revision | Pooling | Request | Response | Headers | SearchEmbedder
-                | IndexingEmbedder,
-                _,
-            ) => FieldStatus::Disallowed,
-            (
-                HuggingFace,
-                Source | Model | Revision | Pooling | DocumentTemplate | DocumentTemplateMaxBytes,
-                _,
-            ) => FieldStatus::Allowed,
-            (
-                HuggingFace,
-                ApiKey | Dimensions | Url | Request | Response | Headers | SearchEmbedder
-                | IndexingEmbedder,
-                _,
-            ) => FieldStatus::Disallowed,
+            (OpenAi, Request | Response | Headers | SearchEmbedder | IndexingEmbedder, _) => {
+                FieldStatus::Disallowed
+            }
             (Ollama, Model, _) => FieldStatus::Mandatory,
             (
                 Ollama,
                 Source | DocumentTemplate | DocumentTemplateMaxBytes | Url | ApiKey | Dimensions,
                 _,
             ) => FieldStatus::Allowed,
-            (
-                Ollama,
-                Revision | Pooling | Request | Response | Headers | SearchEmbedder
-                | IndexingEmbedder,
-                _,
-            ) => FieldStatus::Disallowed,
+            (Ollama, Request | Response | Headers | SearchEmbedder | IndexingEmbedder, _) => {
+                FieldStatus::Disallowed
+            }
             (UserProvided, Dimensions, _) => FieldStatus::Mandatory,
             (UserProvided, Source, _) => FieldStatus::Allowed,
             (
                 UserProvided,
                 Model
-                | Revision
-                | Pooling
                 | ApiKey
                 | DocumentTemplate
                 | DocumentTemplateMaxBytes
@@ -1392,16 +1211,12 @@ impl EmbeddingSettings {
                 | Headers,
                 _,
             ) => FieldStatus::Allowed,
-            (Rest, Model | Revision | Pooling | SearchEmbedder | IndexingEmbedder, _) => {
-                FieldStatus::Disallowed
-            }
+            (Rest, Model | SearchEmbedder | IndexingEmbedder, _) => FieldStatus::Disallowed,
             (Composite, SearchEmbedder | IndexingEmbedder, _) => FieldStatus::Mandatory,
             (Composite, Source, _) => FieldStatus::Allowed,
             (
                 Composite,
                 Model
-                | Revision
-                | Pooling
                 | ApiKey
                 | Dimensions
                 | DocumentTemplate
@@ -1452,10 +1267,7 @@ impl EmbeddingSettings {
             }),
             (
                 NestingContext::Search | NestingContext::Indexing,
-                EmbedderSource::OpenAi
-                | EmbedderSource::HuggingFace
-                | EmbedderSource::Ollama
-                | EmbedderSource::Rest,
+                EmbedderSource::OpenAi | EmbedderSource::Ollama | EmbedderSource::Rest,
             ) => Ok(()),
         }
     }
@@ -1479,7 +1291,6 @@ impl EmbeddingSettings {
 pub enum EmbedderSource {
     #[default]
     OpenAi,
-    HuggingFace,
     Ollama,
     UserProvided,
     Rest,
@@ -1490,7 +1301,6 @@ impl std::fmt::Display for EmbedderSource {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let s = match self {
             EmbedderSource::OpenAi => "openAi",
-            EmbedderSource::HuggingFace => "huggingFace",
             EmbedderSource::UserProvided => "userProvided",
             EmbedderSource::Ollama => "ollama",
             EmbedderSource::Rest => "rest",
@@ -1501,37 +1311,6 @@ impl std::fmt::Display for EmbedderSource {
 }
 
 impl EmbeddingSettings {
-    fn from_hugging_face(
-        super::hf::EmbedderOptions {
-        model,
-        revision,
-        distribution,
-        pooling,
-    }: super::hf::EmbedderOptions,
-        document_template: Setting<String>,
-        document_template_max_bytes: Setting<usize>,
-        quantized: Option<bool>,
-    ) -> Self {
-        Self {
-            source: Setting::Set(EmbedderSource::HuggingFace),
-            model: Setting::Set(model),
-            revision: Setting::some_or_not_set(revision),
-            pooling: Setting::Set(pooling),
-            api_key: Setting::NotSet,
-            dimensions: Setting::NotSet,
-            document_template,
-            document_template_max_bytes,
-            url: Setting::NotSet,
-            request: Setting::NotSet,
-            response: Setting::NotSet,
-            headers: Setting::NotSet,
-            search_embedder: Setting::NotSet,
-            indexing_embedder: Setting::NotSet,
-            distribution: Setting::some_or_not_set(distribution),
-            binary_quantized: Setting::some_or_not_set(quantized),
-        }
-    }
-
     fn from_openai(
         super::openai::EmbedderOptions {
             url,
@@ -1547,8 +1326,6 @@ impl EmbeddingSettings {
         Self {
             source: Setting::Set(EmbedderSource::OpenAi),
             model: Setting::Set(embedding_model.name().to_owned()),
-            revision: Setting::NotSet,
-            pooling: Setting::NotSet,
             api_key: Setting::some_or_not_set(api_key),
             dimensions: Setting::some_or_not_set(dimensions),
             document_template,
@@ -1579,8 +1356,6 @@ impl EmbeddingSettings {
         Self {
             source: Setting::Set(EmbedderSource::Ollama),
             model: Setting::Set(embedding_model),
-            revision: Setting::NotSet,
-            pooling: Setting::NotSet,
             api_key: Setting::some_or_not_set(api_key),
             dimensions: Setting::some_or_not_set(dimensions),
             document_template,
@@ -1603,8 +1378,6 @@ impl EmbeddingSettings {
         Self {
             source: Setting::Set(EmbedderSource::UserProvided),
             model: Setting::NotSet,
-            revision: Setting::NotSet,
-            pooling: Setting::NotSet,
             api_key: Setting::NotSet,
             dimensions: Setting::Set(dimensions),
             document_template: Setting::NotSet,
@@ -1637,8 +1410,6 @@ impl EmbeddingSettings {
         Self {
             source: Setting::Set(EmbedderSource::Rest),
             model: Setting::NotSet,
-            revision: Setting::NotSet,
-            pooling: Setting::NotSet,
             api_key: Setting::some_or_not_set(api_key),
             dimensions: Setting::some_or_not_set(dimensions),
             document_template,
@@ -1661,12 +1432,6 @@ impl From<EmbeddingConfig> for EmbeddingSettings {
         let document_template_max_bytes =
             Setting::Set(prompt.max_bytes.unwrap_or(default_max_bytes()).get());
         match embedder_options {
-            super::EmbedderOptions::HuggingFace(options) => Self::from_hugging_face(
-                options,
-                Setting::Set(prompt.template),
-                document_template_max_bytes,
-                quantized,
-            ),
             super::EmbedderOptions::OpenAi(options) => Self::from_openai(
                 options,
                 Setting::Set(prompt.template),
@@ -1694,8 +1459,6 @@ impl From<EmbeddingConfig> for EmbeddingSettings {
             }) => Self {
                 source: Setting::Set(EmbedderSource::Composite),
                 model: Setting::NotSet,
-                revision: Setting::NotSet,
-                pooling: Setting::NotSet,
                 api_key: Setting::NotSet,
                 dimensions: Setting::NotSet,
                 binary_quantized: Setting::some_or_not_set(quantized),
@@ -1728,14 +1491,6 @@ impl SubEmbeddingSettings {
         document_template_max_bytes: Setting<usize>,
     ) -> Self {
         let settings = match options {
-            SubEmbedderOptions::HuggingFace(embedder_options) => {
-                EmbeddingSettings::from_hugging_face(
-                    embedder_options,
-                    document_template,
-                    document_template_max_bytes,
-                    None,
-                )
-            }
             SubEmbedderOptions::OpenAi(embedder_options) => EmbeddingSettings::from_openai(
                 embedder_options,
                 document_template,
@@ -1767,8 +1522,6 @@ impl From<EmbeddingSettings> for SubEmbeddingSettings {
         let EmbeddingSettings {
             source,
             model,
-            revision,
-            pooling,
             api_key,
             dimensions,
             document_template,
@@ -1785,8 +1538,6 @@ impl From<EmbeddingSettings> for SubEmbeddingSettings {
         Self {
             source,
             model,
-            revision,
-            pooling,
             api_key,
             dimensions,
             document_template,
@@ -1803,97 +1554,6 @@ impl From<EmbeddingSettings> for SubEmbeddingSettings {
     }
 }
 
-impl From<EmbeddingSettings> for EmbeddingConfig {
-    fn from(value: EmbeddingSettings) -> Self {
-        let mut this = Self::default();
-        let EmbeddingSettings {
-            source,
-            model,
-            revision,
-            pooling,
-            api_key,
-            dimensions,
-            document_template,
-            document_template_max_bytes,
-            url,
-            request,
-            response,
-            distribution,
-            headers,
-            binary_quantized,
-            search_embedder,
-            mut indexing_embedder,
-        } = value;
-
-        this.quantized = binary_quantized.set();
-        if let Some((template, document_template_max_bytes)) =
-            match (document_template, &mut indexing_embedder) {
-                (Setting::Set(template), _) => Some((template, document_template_max_bytes)),
-                // retrieve the prompt from the indexing embedder in case of a composite embedder
-                (
-                    _,
-                    Setting::Set(SubEmbeddingSettings {
-                        document_template: Setting::Set(document_template),
-                        document_template_max_bytes,
-                        ..
-                    }),
-                ) => Some((std::mem::take(document_template), *document_template_max_bytes)),
-                _ => None,
-            }
-        {
-            let max_bytes = document_template_max_bytes
-                .set()
-                .and_then(NonZeroUsize::new)
-                .unwrap_or(default_max_bytes());
-
-            this.prompt = PromptData { template, max_bytes: Some(max_bytes) }
-        }
-
-        if let Some(source) = source.set() {
-            this.embedder_options = match source {
-                EmbedderSource::OpenAi => {
-                    SubEmbedderOptions::openai(model, url, api_key, dimensions, distribution).into()
-                }
-                EmbedderSource::Ollama => {
-                    SubEmbedderOptions::ollama(model, url, api_key, dimensions, distribution).into()
-                }
-                EmbedderSource::HuggingFace => {
-                    SubEmbedderOptions::hugging_face(model, revision, pooling, distribution).into()
-                }
-                EmbedderSource::UserProvided => {
-                    SubEmbedderOptions::user_provided(dimensions.set().unwrap(), distribution)
-                        .into()
-                }
-                EmbedderSource::Rest => SubEmbedderOptions::rest(
-                    url.set().unwrap(),
-                    api_key,
-                    request.set().unwrap(),
-                    response.set().unwrap(),
-                    headers,
-                    dimensions,
-                    distribution,
-                )
-                .into(),
-                EmbedderSource::Composite => {
-                    super::EmbedderOptions::Composite(super::composite::EmbedderOptions {
-                        // it is important to give the distribution to the search here, as this is from where we'll retrieve it
-                        search: SubEmbedderOptions::from_settings(
-                            search_embedder.set().unwrap(),
-                            distribution,
-                        ),
-                        index: SubEmbedderOptions::from_settings(
-                            indexing_embedder.set().unwrap(),
-                            Setting::NotSet,
-                        ),
-                    })
-                }
-            };
-        }
-
-        this
-    }
-}
-
 impl SubEmbedderOptions {
     fn from_settings(
         settings: SubEmbeddingSettings,
@@ -1902,8 +1562,6 @@ impl SubEmbedderOptions {
         let SubEmbeddingSettings {
             source,
             model,
-            revision,
-            pooling,
             api_key,
             dimensions,
             // retrieved by the EmbeddingConfig
@@ -1922,9 +1580,6 @@ impl SubEmbedderOptions {
 
         match source.set().unwrap() {
             EmbedderSource::OpenAi => Self::openai(model, url, api_key, dimensions, distribution),
-            EmbedderSource::HuggingFace => {
-                Self::hugging_face(model, revision, pooling, distribution)
-            }
             EmbedderSource::Ollama => Self::ollama(model, url, api_key, dimensions, distribution),
             EmbedderSource::UserProvided => {
                 Self::user_provided(dimensions.set().unwrap(), distribution)
@@ -1966,31 +1621,6 @@ impl SubEmbedderOptions {
         }
         options.distribution = distribution.set();
         SubEmbedderOptions::OpenAi(options)
-    }
-    fn hugging_face(
-        model: Setting<String>,
-        revision: Setting<String>,
-        pooling: Setting<OverridePooling>,
-        distribution: Setting<DistributionShift>,
-    ) -> Self {
-        let mut options = super::hf::EmbedderOptions::default();
-        if let Some(model) = model.set() {
-            options.model = model;
-            // Reset the revision if we are setting the model.
-            // This allows the following:
-            // "huggingFace": {} -> default model with default revision
-            // "huggingFace": { "model": "name-of-the-default-model" } -> default model without a revision
-            // "huggingFace": { "model": "some-other-model" } -> most importantly, other model without a revision
-            options.revision = None;
-        }
-        if let Some(revision) = revision.set() {
-            options.revision = Some(revision);
-        }
-        if let Some(pooling) = pooling.set() {
-            options.pooling = pooling;
-        }
-        options.distribution = distribution.set();
-        SubEmbedderOptions::HuggingFace(options)
     }
     fn user_provided(dimensions: usize, distribution: Setting<DistributionShift>) -> Self {
         Self::UserProvided(super::manual::EmbedderOptions {
@@ -2042,9 +1672,6 @@ impl SubEmbedderOptions {
 impl From<SubEmbedderOptions> for EmbedderOptions {
     fn from(value: SubEmbedderOptions) -> Self {
         match value {
-            SubEmbedderOptions::HuggingFace(embedder_options) => {
-                Self::HuggingFace(embedder_options)
-            }
             SubEmbedderOptions::OpenAi(embedder_options) => Self::OpenAi(embedder_options),
             SubEmbedderOptions::Ollama(embedder_options) => Self::Ollama(embedder_options),
             SubEmbedderOptions::UserProvided(embedder_options) => {
