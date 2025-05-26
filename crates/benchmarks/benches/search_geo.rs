@@ -2,7 +2,7 @@ mod datasets_paths;
 mod utils;
 
 use criterion::{criterion_group, criterion_main};
-use milli::{update::Settings, FilterableAttributesRule};
+use milli_core::{update::Settings, FilterableAttributesRule};
 use utils::Conf;
 
 #[cfg(not(windows))]

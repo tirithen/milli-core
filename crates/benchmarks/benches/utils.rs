@@ -9,12 +9,12 @@ use anyhow::Context;
 use bumpalo::Bump;
 use criterion::BenchmarkId;
 use memmap2::Mmap;
-use milli::heed::EnvOpenOptions;
-use milli::progress::Progress;
-use milli::update::new::indexer;
-use milli::update::{IndexerConfig, Settings};
-use milli::vector::EmbeddingConfigs;
-use milli::{Criterion, Filter, Index, Object, TermsMatchingStrategy};
+use milli_core::heed::EnvOpenOptions;
+use milli_core::progress::Progress;
+use milli_core::update::new::indexer;
+use milli_core::update::{IndexerConfig, Settings};
+use milli_core::vector::EmbeddingConfigs;
+use milli_core::{Criterion, Filter, Index, Object, TermsMatchingStrategy};
 use serde_json::Value;
 
 pub struct Conf<'a> {
@@ -119,7 +119,7 @@ pub fn base_setup(conf: &Conf) -> Index {
     indexer::index(
         &mut wtxn,
         &index,
-        &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+        &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
         config.grenad_parameters(),
         &db_fields_ids_map,
         new_fields_ids_map,
@@ -186,7 +186,7 @@ fn documents_from_jsonl(file: File) -> anyhow::Result<Mmap> {
 
 fn documents_from_json(file: File) -> anyhow::Result<Mmap> {
     let reader = BufReader::new(file);
-    let documents: Vec<milli::Object> = serde_json::from_reader(reader)?;
+    let documents: Vec<milli_core::Object> = serde_json::from_reader(reader)?;
     let mut output = tempfile::tempfile().map(BufWriter::new)?;
 
     for document in documents {

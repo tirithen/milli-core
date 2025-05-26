@@ -1,4 +1,4 @@
-use milli::Object;
+use milli_core::Object;
 use serde::{Deserialize, Serialize};
 use time::{Duration, OffsetDateTime};
 use utoipa::ToSchema;

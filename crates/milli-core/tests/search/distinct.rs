@@ -1,8 +1,8 @@
 use std::collections::HashSet;
 
 use big_s::S;
-use milli::update::Settings;
-use milli::{Criterion, Search, SearchResult, TermsMatchingStrategy};
+use milli_core::update::Settings;
+use milli_core::{Criterion, Search, SearchResult, TermsMatchingStrategy};
 use Criterion::*;
 
 use crate::search::{self, EXTERNAL_DOCUMENTS_IDS};
@@ -16,7 +16,7 @@ macro_rules! test_distinct {
 
             // update distinct attribute
             let mut wtxn = index.write_txn().unwrap();
-            let config = milli::update::IndexerConfig::default();
+            let config = milli_core::update::IndexerConfig::default();
             let mut builder = Settings::new(&mut wtxn, &index, &config);
             builder.set_distinct_field(S(stringify!($distinct)));
             builder.execute(|_| (), || false).unwrap();

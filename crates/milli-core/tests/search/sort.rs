@@ -1,6 +1,6 @@
 use big_s::S;
-use milli::Criterion::{Attribute, Exactness, Proximity, Typo, Words};
-use milli::{AscDesc, Error, Member, Search, TermsMatchingStrategy, UserError};
+use milli_core::Criterion::{Attribute, Exactness, Proximity, Typo, Words};
+use milli_core::{AscDesc, Error, Member, Search, TermsMatchingStrategy, UserError};
 
 use crate::search::{self, EXTERNAL_DOCUMENTS_IDS};
 

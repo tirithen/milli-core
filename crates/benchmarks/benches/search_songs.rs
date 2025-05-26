@@ -2,7 +2,7 @@ mod datasets_paths;
 mod utils;
 
 use criterion::{criterion_group, criterion_main};
-use milli::{update::Settings, FilterableAttributesRule};
+use milli_core::{update::Settings, FilterableAttributesRule};
 use utils::Conf;
 
 #[cfg(not(windows))]
@@ -49,7 +49,7 @@ const BASE_CONF: Conf = Conf {
 
 fn bench_songs(c: &mut criterion::Criterion) {
     let default_criterion: Vec<String> =
-        milli::default_criteria().iter().map(|criteria| criteria.to_string()).collect();
+        milli_core::default_criteria().iter().map(|criteria| criteria.to_string()).collect();
     let default_criterion = default_criterion.iter().map(|s| s.as_str());
     let asc_default: Vec<&str> =
         std::iter::once("released-timestamp:asc").chain(default_criterion.clone()).collect();

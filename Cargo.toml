@@ -10,7 +10,7 @@ members = [
     "crates/dump",
     "crates/file-store",
     "crates/permissive-json-pointer",
-    "crates/milli",
+    "crates/milli-core",
     "crates/filter-parser",
     "crates/flatten-serde-json",
     "crates/json-depth-checker",

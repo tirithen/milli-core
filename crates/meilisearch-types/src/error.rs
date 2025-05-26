@@ -5,7 +5,7 @@ use actix_web::{self as aweb, HttpResponseBuilder};
 use aweb::http::header;
 use aweb::rt::task::JoinError;
 use convert_case::Casing;
-use milli::heed::{Error as HeedError, MdbError};
+use milli_core::heed::{Error as HeedError, MdbError};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -396,9 +396,9 @@ impl ErrorCode for JoinError {
     }
 }
 
-impl ErrorCode for milli::Error {
+impl ErrorCode for milli_core::Error {
     fn error_code(&self) -> Code {
-        use milli::{Error, UserError};
+        use milli_core::{Error, UserError};
 
         match self {
             Error::InternalError(_) => Code::Internal,

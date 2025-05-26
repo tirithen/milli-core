@@ -1,5 +1,5 @@
 use deserr::Deserr;
-use milli::OrderBy;
+use milli_core::OrderBy;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 

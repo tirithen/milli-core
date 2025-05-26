@@ -1,5 +1,5 @@
 use deserr::Deserr;
-use milli::{AttributePatterns, LocalizedAttributesRule};
+use milli_core::{AttributePatterns, LocalizedAttributesRule};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -29,7 +29,7 @@ impl From<LocalizedAttributesRuleView> for LocalizedAttributesRule {
     }
 }
 
-/// Generate a Locale enum and its From and Into implementations for milli::tokenizer::Language.
+/// Generate a Locale enum and its From and Into implementations for milli_core::tokenizer::Language.
 ///
 /// this enum implements `Deserr` in order to be used in the API.
 macro_rules! make_locale {
@@ -43,21 +43,21 @@ macro_rules! make_locale {
             Cmn,
         }
 
-        impl From<milli::tokenizer::Language> for Locale {
-            fn from(other: milli::tokenizer::Language) -> Locale {
+        impl From<milli_core::tokenizer::Language> for Locale {
+            fn from(other: milli_core::tokenizer::Language) -> Locale {
                 match other {
-                    $(milli::tokenizer::Language::$iso_639_3 => Locale::$iso_639_3,)+
-                    milli::tokenizer::Language::Cmn => Locale::Cmn,
+                    $(milli_core::tokenizer::Language::$iso_639_3 => Locale::$iso_639_3,)+
+                    milli_core::tokenizer::Language::Cmn => Locale::Cmn,
                 }
             }
         }
 
-        impl From<Locale> for milli::tokenizer::Language {
-            fn from(other: Locale) -> milli::tokenizer::Language {
+        impl From<Locale> for milli_core::tokenizer::Language {
+            fn from(other: Locale) -> milli_core::tokenizer::Language {
                 match other {
-                    $(Locale::$iso_639_1 => milli::tokenizer::Language::$iso_639_3,)+
-                    $(Locale::$iso_639_3 => milli::tokenizer::Language::$iso_639_3,)+
-                    Locale::Cmn => milli::tokenizer::Language::Cmn,
+                    $(Locale::$iso_639_1 => milli_core::tokenizer::Language::$iso_639_3,)+
+                    $(Locale::$iso_639_3 => milli_core::tokenizer::Language::$iso_639_3,)+
+                    Locale::Cmn => milli_core::tokenizer::Language::Cmn,
                 }
             }
         }

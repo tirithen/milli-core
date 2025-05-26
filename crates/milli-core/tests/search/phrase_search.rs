@@ -1,5 +1,5 @@
-use milli::update::{IndexerConfig, Settings};
-use milli::{Criterion, Index, Search, TermsMatchingStrategy};
+use milli_core::update::{IndexerConfig, Settings};
+use milli_core::{Criterion, Index, Search, TermsMatchingStrategy};
 
 use crate::search::Criterion::{Attribute, Exactness, Proximity};
 

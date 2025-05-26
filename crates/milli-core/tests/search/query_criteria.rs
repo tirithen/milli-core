@@ -5,11 +5,11 @@ use bumpalo::Bump;
 use heed::EnvOpenOptions;
 use itertools::Itertools;
 use maplit::hashset;
-use milli::progress::Progress;
-use milli::update::new::indexer;
-use milli::update::{IndexerConfig, Settings};
-use milli::vector::EmbeddingConfigs;
-use milli::{AscDesc, Criterion, Index, Member, Search, SearchResult, TermsMatchingStrategy};
+use milli_core::progress::Progress;
+use milli_core::update::new::indexer;
+use milli_core::update::{IndexerConfig, Settings};
+use milli_core::vector::EmbeddingConfigs;
+use milli_core::{AscDesc, Criterion, Index, Member, Search, SearchResult, TermsMatchingStrategy};
 use rand::Rng;
 use Criterion::*;
 
@@ -335,7 +335,7 @@ fn criteria_ascdesc() {
     indexer::index(
         &mut wtxn,
         &index,
-        &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+        &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
         config.grenad_parameters(),
         &db_fields_ids_map,
         new_fields_ids_map,

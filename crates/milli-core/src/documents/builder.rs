@@ -17,7 +17,7 @@ use crate::Object;
 /// ## example:
 /// ```
 /// use serde_json::json;
-/// use milli::documents::DocumentsBatchBuilder;
+/// use milli_core::documents::DocumentsBatchBuilder;
 ///
 /// let json = json!({ "id": 1, "name": "foo" });
 ///

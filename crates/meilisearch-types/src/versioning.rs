@@ -2,13 +2,13 @@ use std::fs;
 use std::io::{ErrorKind, Write};
 use std::path::Path;
 
-use milli::heed;
+use milli_core::heed;
 use tempfile::NamedTempFile;
 
 /// The name of the file that contains the version of the database.
 pub const VERSION_FILE_NAME: &str = "VERSION";
 
-pub use milli::constants::{VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH};
+pub use milli_core::constants::{VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH};
 
 /// Persists the version of the current Meilisearch binary to a VERSION file
 pub fn create_current_version_file(db_path: &Path) -> anyhow::Result<()> {

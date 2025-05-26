@@ -24,7 +24,7 @@ file-store = { path = "../file-store" }
 flate2 = "1.0.35"
 fst = "0.4.7"
 memmap2 = "0.9.5"
-milli = { path = "../milli" }
+milli-core = { path = "../milli-core" }
 roaring = { version = "0.10.10", features = ["serde"] }
 rustc-hash = "2.1.0"
 serde = { version = "1.0.217", features = ["derive"] }
@@ -50,28 +50,28 @@ meili-snap = { path = "../meili-snap" }
 
 [features]
 # all specialized tokenizations
-all-tokenizations = ["milli/all-tokenizations"]
+all-tokenizations = ["milli-core/all-tokenizations"]
 
 # chinese specialized tokenization
-chinese = ["milli/chinese"]
-chinese-pinyin = ["milli/chinese-pinyin"]
+chinese = ["milli-core/chinese"]
+chinese-pinyin = ["milli-core/chinese-pinyin"]
 # hebrew specialized tokenization
-hebrew = ["milli/hebrew"]
+hebrew = ["milli-core/hebrew"]
 # japanese specialized tokenization
-japanese = ["milli/japanese"]
+japanese = ["milli-core/japanese"]
 # korean specialized tokenization
-korean = ["milli/korean"]
+korean = ["milli-core/korean"]
 # thai specialized tokenization
-thai = ["milli/thai"]
+thai = ["milli-core/thai"]
 # allow greek specialized tokenization
-greek = ["milli/greek"]
+greek = ["milli-core/greek"]
 # allow khmer specialized tokenization
-khmer = ["milli/khmer"]
+khmer = ["milli-core/khmer"]
 # allow vietnamese specialized tokenization
-vietnamese = ["milli/vietnamese"]
+vietnamese = ["milli-core/vietnamese"]
 # force swedish character recomposition
-swedish-recomposition = ["milli/swedish-recomposition"]
+swedish-recomposition = ["milli-core/swedish-recomposition"]
 # allow german tokenization
-german = ["milli/german"]
+german = ["milli-core/german"]
 # allow turkish normalization
-turkish = ["milli/turkish"]
+turkish = ["milli-core/turkish"]

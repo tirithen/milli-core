@@ -7,11 +7,11 @@ use bumpalo::Bump;
 use either::{Either, Left, Right};
 use heed::EnvOpenOptions;
 use maplit::{btreemap, hashset};
-use milli::progress::Progress;
-use milli::update::new::indexer;
-use milli::update::{IndexerConfig, Settings};
-use milli::vector::EmbeddingConfigs;
-use milli::{
+use milli_core::progress::Progress;
+use milli_core::update::new::indexer;
+use milli_core::update::{IndexerConfig, Settings};
+use milli_core::vector::EmbeddingConfigs;
+use milli_core::{
     AscDesc, Criterion, DocumentId, FilterableAttributesRule, Index, Member, TermsMatchingStrategy,
 };
 use serde::{Deserialize, Deserializer};
@@ -105,7 +105,7 @@ pub fn setup_search_index_with_criteria(criteria: &[Criterion]) -> Index {
     indexer::index(
         &mut wtxn,
         &index,
-        &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+        &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
         config.grenad_parameters(),
         &db_fields_ids_map,
         new_fields_ids_map,

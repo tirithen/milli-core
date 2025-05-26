@@ -4,7 +4,7 @@ use std::str::FromStr;
 
 use deserr::{DeserializeError, Deserr, MergeWithError, ValuePointerRef};
 use enum_iterator::Sequence;
-use milli::update::Setting;
+use milli_core::update::Setting;
 use serde::{Deserialize, Serialize};
 use time::format_description::well_known::Rfc3339;
 use time::macros::{format_description, time};

@@ -497,7 +497,7 @@ dependencies = [
  "csv",
  "flate2",
  "memmap2",
- "milli",
+ "milli-core",
  "mimalloc",
  "rand",
  "rand_chacha",
@@ -2071,7 +2071,7 @@ dependencies = [
  "clap",
  "either",
  "fastrand",
- "milli",
+ "milli-core",
  "serde",
  "serde_json",
  "tempfile",
@@ -3776,7 +3776,7 @@ dependencies = [
  "insta",
  "meili-snap",
  "memmap2",
- "milli",
+ "milli-core",
  "roaring",
  "rustc-hash 2.1.0",
  "serde",
@@ -3826,7 +3826,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "milli"
+name = "milli-core"
 version = "1.15.0"
 dependencies = [
  "allocator-api2",

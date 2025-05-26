@@ -4,8 +4,8 @@ use std::fmt::{Display, Write};
 use std::str::FromStr;
 
 use enum_iterator::Sequence;
-use milli::update::IndexDocumentsMethod;
-use milli::Object;
+use milli_core::update::IndexDocumentsMethod;
+use milli_core::Object;
 use roaring::RoaringBitmap;
 use serde::{Deserialize, Serialize, Serializer};
 use time::{Duration, OffsetDateTime};
@@ -113,7 +113,7 @@ pub enum KindWithContent {
     DocumentEdition {
         index_uid: String,
         filter_expr: Option<serde_json::Value>,
-        context: Option<milli::Object>,
+        context: Option<milli_core::Object>,
         function: String,
     },
     DocumentClear {

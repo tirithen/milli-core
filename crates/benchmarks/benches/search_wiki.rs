@@ -2,7 +2,7 @@ mod datasets_paths;
 mod utils;
 
 use criterion::{criterion_group, criterion_main};
-use milli::update::Settings;
+use milli_core::update::Settings;
 use utils::Conf;
 
 #[cfg(not(windows))]

@@ -1,12 +1,11 @@
 [package]
-name = "milli"
+name = "milli-core"
 edition = "2021"
-publish = false
+homepage = "https://github.com/tirithen/milli-core/"
 
 version.workspace = true
 authors.workspace = true
 description.workspace = true
-homepage.workspace = true
 readme.workspace = true
 # edition.workspace = true
 license.workspace = true

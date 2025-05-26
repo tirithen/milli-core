@@ -8,13 +8,13 @@ use bumpalo::Bump;
 use clap::Parser;
 use either::Either;
 use fuzzers::Operation;
-use milli::documents::mmap_from_objects;
-use milli::heed::EnvOpenOptions;
-use milli::progress::Progress;
-use milli::update::new::indexer;
-use milli::update::IndexerConfig;
-use milli::vector::EmbeddingConfigs;
-use milli::Index;
+use milli_core::documents::mmap_from_objects;
+use milli_core::heed::EnvOpenOptions;
+use milli_core::progress::Progress;
+use milli_core::update::new::indexer;
+use milli_core::update::IndexerConfig;
+use milli_core::vector::EmbeddingConfigs;
+use milli_core::Index;
 use serde_json::Value;
 use tempfile::TempDir;
 
@@ -135,7 +135,7 @@ fn main() {
                             indexer::index(
                                 &mut wtxn,
                                 &index,
-                                &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                                &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                                 indexer_config.grenad_parameters(),
                                 &db_fields_ids_map,
                                 new_fields_ids_map,

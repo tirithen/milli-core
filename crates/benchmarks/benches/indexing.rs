@@ -6,13 +6,13 @@ use std::path::Path;
 
 use bumpalo::Bump;
 use criterion::{criterion_group, criterion_main, Criterion};
-use milli::documents::PrimaryKey;
-use milli::heed::{EnvOpenOptions, RwTxn};
-use milli::progress::Progress;
-use milli::update::new::indexer;
-use milli::update::{IndexerConfig, Settings};
-use milli::vector::EmbeddingConfigs;
-use milli::{FilterableAttributesRule, Index};
+use milli_core::documents::PrimaryKey;
+use milli_core::heed::{EnvOpenOptions, RwTxn};
+use milli_core::progress::Progress;
+use milli_core::update::new::indexer;
+use milli_core::update::{IndexerConfig, Settings};
+use milli_core::vector::EmbeddingConfigs;
+use milli_core::{FilterableAttributesRule, Index};
 use rand::seq::SliceRandom;
 use rand_chacha::rand_core::SeedableRng;
 use roaring::RoaringBitmap;
@@ -73,7 +73,7 @@ fn setup_index_with_settings(
     searchable_fields: &[&str],
     filterable_fields: &[&str],
     sortable_fields: &[&str],
-) -> milli::Index {
+) -> milli_core::Index {
     let index = setup_index();
     let mut wtxn = index.write_txn().unwrap();
     setup_settings(
@@ -160,7 +160,7 @@ fn indexing_songs_default(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -226,7 +226,7 @@ fn reindexing_songs_default(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -270,7 +270,7 @@ fn reindexing_songs_default(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -338,7 +338,7 @@ fn deleting_songs_in_batches_default(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -414,7 +414,7 @@ fn indexing_songs_in_three_batches_default(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -458,7 +458,7 @@ fn indexing_songs_in_three_batches_default(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -498,7 +498,7 @@ fn indexing_songs_in_three_batches_default(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -565,7 +565,7 @@ fn indexing_songs_without_faceted_numbers(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -631,7 +631,7 @@ fn indexing_songs_without_faceted_fields(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -697,7 +697,7 @@ fn indexing_wiki(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -762,7 +762,7 @@ fn reindexing_wiki(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -806,7 +806,7 @@ fn reindexing_wiki(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -873,7 +873,7 @@ fn deleting_wiki_in_batches_default(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -949,7 +949,7 @@ fn indexing_wiki_in_three_batches(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -994,7 +994,7 @@ fn indexing_wiki_in_three_batches(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -1035,7 +1035,7 @@ fn indexing_wiki_in_three_batches(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -1101,7 +1101,7 @@ fn indexing_movies_default(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -1166,7 +1166,7 @@ fn reindexing_movies_default(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -1210,7 +1210,7 @@ fn reindexing_movies_default(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -1277,7 +1277,7 @@ fn deleting_movies_in_batches_default(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -1325,7 +1325,7 @@ fn delete_documents_from_ids(index: Index, document_ids_to_delete: Vec<RoaringBi
         indexer::index(
             &mut wtxn,
             &index,
-            &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+            &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
             config.grenad_parameters(),
             &db_fields_ids_map,
             new_fields_ids_map,
@@ -1389,7 +1389,7 @@ fn indexing_movies_in_three_batches(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -1433,7 +1433,7 @@ fn indexing_movies_in_three_batches(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -1473,7 +1473,7 @@ fn indexing_movies_in_three_batches(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -1562,7 +1562,7 @@ fn indexing_nested_movies_default(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -1652,7 +1652,7 @@ fn deleting_nested_movies_in_batches_default(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -1734,7 +1734,7 @@ fn indexing_nested_movies_without_faceted_fields(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -1800,7 +1800,7 @@ fn indexing_geo(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -1865,7 +1865,7 @@ fn reindexing_geo(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -1909,7 +1909,7 @@ fn reindexing_geo(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,
@@ -1976,7 +1976,7 @@ fn deleting_geo_in_batches_default(c: &mut Criterion) {
                 indexer::index(
                     &mut wtxn,
                     &index,
-                    &milli::ThreadPoolNoAbortBuilder::new().build().unwrap(),
+                    &milli_core::ThreadPoolNoAbortBuilder::new().build().unwrap(),
                     config.grenad_parameters(),
                     &db_fields_ids_map,
                     new_fields_ids_map,

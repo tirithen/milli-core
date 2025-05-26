@@ -8,11 +8,13 @@ use std::str::FromStr;
 
 use deserr::{DeserializeError, Deserr, ErrorKind, MergeWithError, ValuePointerRef};
 use fst::IntoStreamer;
-use milli::disabled_typos_terms::DisabledTyposTerms;
-use milli::index::{IndexEmbeddingConfig, PrefixSearch};
-use milli::proximity::ProximityPrecision;
-use milli::update::Setting;
-use milli::{Criterion, CriterionError, FilterableAttributesRule, Index, DEFAULT_VALUES_PER_FACET};
+use milli_core::disabled_typos_terms::DisabledTyposTerms;
+use milli_core::index::{IndexEmbeddingConfig, PrefixSearch};
+use milli_core::proximity::ProximityPrecision;
+use milli_core::update::Setting;
+use milli_core::{
+    Criterion, CriterionError, FilterableAttributesRule, Index, DEFAULT_VALUES_PER_FACET,
+};
 use serde::{Deserialize, Serialize, Serializer};
 use utoipa::ToSchema;
 
@@ -135,10 +137,10 @@ pub struct PaginationSettings {
     pub max_total_hits: Setting<usize>,
 }
 
-impl MergeWithError<milli::CriterionError> for DeserrJsonError<InvalidSettingsRankingRules> {
+impl MergeWithError<milli_core::CriterionError> for DeserrJsonError<InvalidSettingsRankingRules> {
     fn merge(
         _self_: Option<Self>,
-        other: milli::CriterionError,
+        other: milli_core::CriterionError,
         merge_location: ValuePointerRef,
     ) -> ControlFlow<Self, Self> {
         Self::error::<Infallible>(
@@ -463,16 +465,16 @@ impl Settings<Unchecked> {
         }
     }
 
-    pub fn validate(self) -> Result<Self, milli::Error> {
+    pub fn validate(self) -> Result<Self, milli_core::Error> {
         self.validate_embedding_settings()
     }
 
-    fn validate_embedding_settings(mut self) -> Result<Self, milli::Error> {
+    fn validate_embedding_settings(mut self) -> Result<Self, milli_core::Error> {
         let Setting::Set(mut configs) = self.embedders else { return Ok(self) };
         for (name, config) in configs.iter_mut() {
             let config_to_check = std::mem::take(config);
             let checked_config =
-                milli::update::validate_embedding_settings(config_to_check.inner, name)?;
+                milli_core::update::validate_embedding_settings(config_to_check.inner, name)?;
             *config = SettingEmbeddingSettings { inner: checked_config };
         }
         self.embedders = Setting::Set(configs);
@@ -550,7 +552,7 @@ pub struct Facets {
 
 pub fn apply_settings_to_builder(
     settings: &Settings<Checked>,
-    builder: &mut milli::update::Settings,
+    builder: &mut milli_core::update::Settings,
 ) {
     let Settings {
         displayed_attributes,
@@ -794,7 +796,7 @@ pub fn settings(
     index: &Index,
     rtxn: &crate::heed::RoTxn,
     secret_policy: SecretPolicy,
-) -> Result<Settings<Checked>, milli::Error> {
+) -> Result<Settings<Checked>, milli_core::Error> {
     let displayed_attributes =
         index.displayed_fields(rtxn)?.map(|fields| fields.into_iter().map(String::from).collect());
 
@@ -810,7 +812,7 @@ pub fn settings(
 
     let stop_words = index
         .stop_words(rtxn)?
-        .map(|stop_words| -> Result<BTreeSet<_>, milli::Error> {
+        .map(|stop_words| -> Result<BTreeSet<_>, milli_core::Error> {
             Ok(stop_words.stream().into_strs()?.into_iter().collect())
         })
         .transpose()?

@@ -1,4 +1,4 @@
-use milli::progress::ProgressView;
+use milli_core::progress::ProgressView;
 use serde::Serialize;
 use time::{Duration, OffsetDateTime};
 use utoipa::ToSchema;

@@ -351,7 +351,7 @@ pub fn is_faceted(field: &str, faceted_fields: impl IntoIterator<Item = impl AsR
 
 /// Returns `true` if the field match the facet.
 /// ```
-/// use milli::is_faceted_by;
+/// use milli_core::is_faceted_by;
 /// // -- the valid basics
 /// assert!(is_faceted_by("animaux", "animaux"));
 /// assert!(is_faceted_by("animaux.chien", "animaux"));

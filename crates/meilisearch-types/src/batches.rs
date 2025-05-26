@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use milli::progress::ProgressView;
+use milli_core::progress::ProgressView;
 use serde::{Deserialize, Serialize};
 use time::OffsetDateTime;
 use utoipa::ToSchema;
