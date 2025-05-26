@@ -1,0 +1,126 @@
+---
+source: milli/src/search/new/tests/exactness.rs
+expression: "format!(\"{document_ids_scores:#?}\")"
+---
+[
+    (
+        8,
+        [
+            Words(
+                Words {
+                    matching_words: 9,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                NoExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 9,
+                    max_matching_words: 9,
+                },
+            ),
+        ],
+    ),
+    (
+        7,
+        [
+            Words(
+                Words {
+                    matching_words: 3,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                NoExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 3,
+                    max_matching_words: 3,
+                },
+            ),
+        ],
+    ),
+    (
+        4,
+        [
+            Words(
+                Words {
+                    matching_words: 2,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                NoExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 2,
+                    max_matching_words: 2,
+                },
+            ),
+        ],
+    ),
+    (
+        6,
+        [
+            Words(
+                Words {
+                    matching_words: 2,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                NoExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 2,
+                    max_matching_words: 2,
+                },
+            ),
+        ],
+    ),
+    (
+        3,
+        [
+            Words(
+                Words {
+                    matching_words: 1,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                NoExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 1,
+                    max_matching_words: 1,
+                },
+            ),
+        ],
+    ),
+    (
+        5,
+        [
+            Words(
+                Words {
+                    matching_words: 1,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                NoExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 1,
+                    max_matching_words: 1,
+                },
+            ),
+        ],
+    ),
+]

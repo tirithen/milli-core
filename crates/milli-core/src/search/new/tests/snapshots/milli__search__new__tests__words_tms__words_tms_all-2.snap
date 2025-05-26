@@ -1,0 +1,102 @@
+---
+source: milli/src/search/new/tests/words_tms.rs
+expression: "format!(\"{document_scores:#?}\")"
+---
+[
+    [
+        Proximity(
+            Rank {
+                rank: 25,
+                max_rank: 25,
+            },
+        ),
+    ],
+    [
+        Proximity(
+            Rank {
+                rank: 25,
+                max_rank: 25,
+            },
+        ),
+    ],
+    [
+        Proximity(
+            Rank {
+                rank: 24,
+                max_rank: 25,
+            },
+        ),
+    ],
+    [
+        Proximity(
+            Rank {
+                rank: 24,
+                max_rank: 25,
+            },
+        ),
+    ],
+    [
+        Proximity(
+            Rank {
+                rank: 23,
+                max_rank: 25,
+            },
+        ),
+    ],
+    [
+        Proximity(
+            Rank {
+                rank: 22,
+                max_rank: 25,
+            },
+        ),
+    ],
+    [
+        Proximity(
+            Rank {
+                rank: 21,
+                max_rank: 25,
+            },
+        ),
+    ],
+    [
+        Proximity(
+            Rank {
+                rank: 20,
+                max_rank: 25,
+            },
+        ),
+    ],
+    [
+        Proximity(
+            Rank {
+                rank: 20,
+                max_rank: 25,
+            },
+        ),
+    ],
+    [
+        Proximity(
+            Rank {
+                rank: 19,
+                max_rank: 25,
+            },
+        ),
+    ],
+    [
+        Proximity(
+            Rank {
+                rank: 19,
+                max_rank: 25,
+            },
+        ),
+    ],
+    [
+        Proximity(
+            Rank {
+                rank: 1,
+                max_rank: 25,
+            },
+        ),
+    ],
+]

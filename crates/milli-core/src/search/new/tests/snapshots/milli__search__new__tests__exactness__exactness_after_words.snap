@@ -1,0 +1,366 @@
+---
+source: milli/src/search/new/tests/exactness.rs
+expression: "format!(\"{document_ids_scores:#?}\")"
+---
+[
+    (
+        19,
+        [
+            Words(
+                Words {
+                    matching_words: 9,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                ExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 9,
+                    max_matching_words: 9,
+                },
+            ),
+        ],
+    ),
+    (
+        9,
+        [
+            Words(
+                Words {
+                    matching_words: 9,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                NoExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 6,
+                    max_matching_words: 9,
+                },
+            ),
+        ],
+    ),
+    (
+        18,
+        [
+            Words(
+                Words {
+                    matching_words: 8,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                ExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 8,
+                    max_matching_words: 8,
+                },
+            ),
+        ],
+    ),
+    (
+        8,
+        [
+            Words(
+                Words {
+                    matching_words: 8,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                NoExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 5,
+                    max_matching_words: 8,
+                },
+            ),
+        ],
+    ),
+    (
+        17,
+        [
+            Words(
+                Words {
+                    matching_words: 7,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                ExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 7,
+                    max_matching_words: 7,
+                },
+            ),
+        ],
+    ),
+    (
+        16,
+        [
+            Words(
+                Words {
+                    matching_words: 7,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                NoExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 7,
+                    max_matching_words: 7,
+                },
+            ),
+        ],
+    ),
+    (
+        6,
+        [
+            Words(
+                Words {
+                    matching_words: 7,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                NoExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 4,
+                    max_matching_words: 7,
+                },
+            ),
+        ],
+    ),
+    (
+        7,
+        [
+            Words(
+                Words {
+                    matching_words: 7,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                NoExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 4,
+                    max_matching_words: 7,
+                },
+            ),
+        ],
+    ),
+    (
+        15,
+        [
+            Words(
+                Words {
+                    matching_words: 5,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                ExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 5,
+                    max_matching_words: 5,
+                },
+            ),
+        ],
+    ),
+    (
+        5,
+        [
+            Words(
+                Words {
+                    matching_words: 5,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                NoExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 2,
+                    max_matching_words: 5,
+                },
+            ),
+        ],
+    ),
+    (
+        14,
+        [
+            Words(
+                Words {
+                    matching_words: 4,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                ExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 4,
+                    max_matching_words: 4,
+                },
+            ),
+        ],
+    ),
+    (
+        4,
+        [
+            Words(
+                Words {
+                    matching_words: 4,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                NoExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 2,
+                    max_matching_words: 4,
+                },
+            ),
+        ],
+    ),
+    (
+        13,
+        [
+            Words(
+                Words {
+                    matching_words: 3,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                ExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 3,
+                    max_matching_words: 3,
+                },
+            ),
+        ],
+    ),
+    (
+        3,
+        [
+            Words(
+                Words {
+                    matching_words: 3,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                NoExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 1,
+                    max_matching_words: 3,
+                },
+            ),
+        ],
+    ),
+    (
+        12,
+        [
+            Words(
+                Words {
+                    matching_words: 2,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                ExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 2,
+                    max_matching_words: 2,
+                },
+            ),
+        ],
+    ),
+    (
+        2,
+        [
+            Words(
+                Words {
+                    matching_words: 2,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                NoExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 1,
+                    max_matching_words: 2,
+                },
+            ),
+        ],
+    ),
+    (
+        1,
+        [
+            Words(
+                Words {
+                    matching_words: 1,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                ExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 1,
+                    max_matching_words: 1,
+                },
+            ),
+        ],
+    ),
+    (
+        11,
+        [
+            Words(
+                Words {
+                    matching_words: 1,
+                    max_matching_words: 9,
+                },
+            ),
+            ExactAttribute(
+                ExactMatch,
+            ),
+            ExactWords(
+                ExactWords {
+                    matching_words: 1,
+                    max_matching_words: 1,
+                },
+            ),
+        ],
+    ),
+]
